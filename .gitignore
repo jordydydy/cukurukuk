@@ -1,24 +1,43 @@
-# Logs
-logs
-*.log
+# Node.js
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+.npm/
+.yarn/
+.pnp/
+.pnp.js
+.pnp.cjs
+.pnp.mjs
 
-node_modules
-dist
-dist-ssr
-*.local
+# Build artifacts
+dist/
+build/
+coverage/
+*.tgz
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# Logs
+logs/
+*.log
+
+# Test files
+*.spec.js
+*.test.js
+
+# Other
+temp/
+tmp/
