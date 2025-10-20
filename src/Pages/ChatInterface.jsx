@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChatInput from '../Components/ChatInput';
 import Message from '../Components/Message';
 import '../index.css'; 
+import { extractJsonFromText } from '../Components/jsonParser';
 
 const ChatInterface = () => {
     const [messages, setMessages] = useState([]);
@@ -89,6 +90,28 @@ const ChatInterface = () => {
                     } catch { /* ignore partial parse errors */ }
                 }
             }
+
+            // After streaming finishes, attempt to extract JSON and update the last bot message
+            const { summary, json } = extractJsonFromText(fullBotMessage);
+            if (json !== null) {
+                setMessages(prev => {
+                    const newMessages = [...prev];
+                    // find last bot message index
+                    for (let i = newMessages.length - 1; i >= 0; i--) {
+                        if (newMessages[i].sender === 'bot') {
+                            newMessages[i] = {
+                                ...newMessages[i],
+                                text: summary,   // keep summaries on top
+                                chartData: json, // parsed JSON for charts
+                            };
+                            break;
+                        }
+                    }
+                    return newMessages;
+                });
+            } else {
+                // no JSON found — keep fullBotMessage as final text (already set)
+            }
         } catch (error) {
             console.error("Dify API call failed:", error);
             setMessages(prev => [...prev, { text: "Sorry, I'm having trouble connecting. Please try again.", sender: 'bot' }]);
@@ -120,7 +143,7 @@ const ChatInterface = () => {
 							// messages list
 							<div className="flex flex-col space-y-4">
 								{messages.map((msg, index) => (
-									<Message key={index} text={msg.text} sender={msg.sender} />
+									<Message key={index} text={msg.text} sender={msg.sender} chartData={msg.chartData} />
 								))}
 								{isLoading && messages[messages.length - 1]?.sender === 'user' && (
 									<div className="self-start">
