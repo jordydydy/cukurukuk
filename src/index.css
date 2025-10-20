@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* Ensure the page root uses the chat background and fills viewport to avoid white flashes */
+html, body, #root, .App {
+  height: 100%;
+  background-color: #212121;
+  color: #ffffff;
+}
+
+/* Add the typing animation here */
+@layer utilities {
+    .animate-typing-blink {
+        animation: blink 1.4s infinite both;
+    }
+
+    .animate-typing-blink-delay-1 {
+        animation: blink 1.4s infinite both;
+        animation-delay: 0.2s;
+    }
+
+    .animate-typing-blink-delay-2 {
+        animation: blink 1.4s infinite both;
+        animation-delay: 0.4s;
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.2;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+}
+
+/* Animation for the initial centered view */
+.initial-view {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animation for the active chat view */
+.active-chat-view {
+  animation: slideUpFadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chat scrollbar styling used by .chat-scrollbar (WebKit + Firefox) */
+/* Keep the previous thumb look but make the track use the dark background so no white shows */
+.chat-scrollbar {
+  scrollbar-width: thin;
+  /* thumb color and track color (for Firefox) */
+  scrollbar-color: rgba(255,255,255,0.12) #212121;
+}
+
+.chat-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* track uses same dark background to avoid white flash */
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: #212121;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.10);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  transition: background 160ms ease-in-out;
+}
+
+.chat-scrollbar:hover::-webkit-scrollbar-thumb,
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.18);
+}
