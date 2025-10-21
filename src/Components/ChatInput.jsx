@@ -24,13 +24,19 @@ const ChatInput = ({ onSendMessage }) => {
                         }
                     }}
                     placeholder="Type your message..."
-                    className="w-full pl-5 pr-14 py-4 bg-[#3e3e42] rounded-3xl resize-none text-white text-base"
+                    className="w-full pl-5 pr-14 py-4 rounded-3xl resize-none text-base"
+                    style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)' }}
                     rows={1}
                 />
                 <button
                     type="submit"
                     disabled={!inputValue.trim()}
-                    className="absolute right-3 p-2 rounded-full bg-white text-black disabled:text-white disabled:bg-[#777C6D] transition-colors"
+                    className="absolute right-3 p-2 rounded-full transition-colors"
+                    style={{
+                        backgroundColor: 'var(--send-btn-bg)',
+                        color: 'var(--send-btn-text)',
+                        opacity: !inputValue.trim() ? 0.5 : 1
+                    }}
                 >
                     <FiArrowUp size={22} />
                 </button>

@@ -1,10 +1,63 @@
 @import "tailwindcss";
 
+/* Theme variables: default = dark, .theme-light overrides for white theme */
+:root {
+  --chat-bg: #212121;
+  --text-color: #ffffff;
+
+  --bubble-user-bg: #3e3e42;
+  --bubble-user-text: #ffffff;
+
+  --bubble-bot-bg: #3e3e42;
+  --bubble-bot-text: #e6e6e6;
+
+  --input-bg: #3e3e42;
+  --input-text: #ffffff;
+  --send-btn-bg: #ffffff;
+  --send-btn-text: #000000;
+
+  --scrollbar-track: #212121;
+  --scrollbar-thumb: rgba(255,255,255,0.10);
+  --scrollbar-thumb-hover: rgba(255,255,255,0.18);
+
+  /* new variables for switch and muted text and chart background */
+  --switch-track: rgba(255,255,255,0.12);
+  --switch-thumb: #ffffff;
+  --muted-text: rgba(255,255,255,0.65);
+  --chart-bg: #1f1f1f;
+}
+
+.theme-light {
+  --chat-bg: #ffffff;
+  --text-color: #111827;
+
+  --bubble-user-bg: #e6f0ff; /* light blue */
+  --bubble-user-text: #0b1220;
+
+  --bubble-bot-bg: #f3f4f6; /* light gray */
+  --bubble-bot-text: #0b1220;
+
+  --input-bg: #f3f4f6;
+  --input-text: #0b1220;
+  --send-btn-bg: #111827;
+  --send-btn-text: #ffffff;
+
+  --scrollbar-track: #ffffff;
+  --scrollbar-thumb: rgba(0,0,0,0.12);
+  --scrollbar-thumb-hover: rgba(0,0,0,0.18);
+
+  /* switch + muted + chart overrides for light theme */
+  --switch-track: rgba(0,0,0,0.08);
+  --switch-thumb: #111827;
+  --muted-text: rgba(0,0,0,0.65);
+  --chart-bg: #ffffff;
+}
+
 /* Ensure the page root uses the chat background and fills viewport to avoid white flashes */
 html, body, #root, .App {
   height: 100%;
-  background-color: #212121;
-  color: #ffffff;
+  background-color: var(--chat-bg);
+  color: var(--text-color);
 }
 
 /* Add the typing animation here */
@@ -65,11 +118,10 @@ html, body, #root, .App {
 }
 
 /* Chat scrollbar styling used by .chat-scrollbar (WebKit + Firefox) */
-/* Keep the previous thumb look but make the track use the dark background so no white shows */
+/* Use CSS variables so scrollbar adapts to theme */
 .chat-scrollbar {
   scrollbar-width: thin;
-  /* thumb color and track color (for Firefox) */
-  scrollbar-color: rgba(255,255,255,0.12) #212121;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .chat-scrollbar::-webkit-scrollbar {
@@ -77,13 +129,12 @@ html, body, #root, .App {
   height: 10px;
 }
 
-/* track uses same dark background to avoid white flash */
 .chat-scrollbar::-webkit-scrollbar-track {
-  background: #212121;
+  background: var(--scrollbar-track);
 }
 
 .chat-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.10);
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
   border: 3px solid transparent;
   background-clip: padding-box;
@@ -92,5 +143,5 @@ html, body, #root, .App {
 
 .chat-scrollbar:hover::-webkit-scrollbar-thumb,
 .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.18);
+  background: var(--scrollbar-thumb-hover);
 }

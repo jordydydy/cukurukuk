@@ -79,9 +79,11 @@ const Message = ({ text, sender, chartData }) => {
     return (
         <div className={`w-full flex ${isUser ? 'justify-end' : 'justify-start'} px-2`}>
             <div
-                className={`inline-block rounded-2xl px-4 py-3 max-w-[75%] whitespace-pre-wrap wrap-break-word transition-opacity duration-200 ease-out ${
-                    entered ? 'opacity-100' : 'opacity-0'
-                } ${isUser ? 'bg-[#3e3e42] text-white' : 'bg-[#3e3e42] text-gray-200'}`}
+                className={`inline-block rounded-2xl px-4 py-3 max-w-[75%] whitespace-pre-wrap wrap-break-word transition-opacity duration-200 ease-out ${entered ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                    backgroundColor: isUser ? 'var(--bubble-user-bg)' : 'var(--bubble-bot-bg)',
+                    color: isUser ? 'var(--bubble-user-text)' : 'var(--bubble-bot-text)'
+                }}
             >
                 {/* Summary / human-readable text stays on top */}
                 {text?.split('\n').map((line, index) => (
@@ -92,7 +94,7 @@ const Message = ({ text, sender, chartData }) => {
                 {chartData && (
                     <div className="mt-3 rounded-md overflow-hidden">
                         {option ? (
-                            <div className="bg-[#1f1f1f] p-0 rounded-md">
+                            <div className="p-0 rounded-md" style={{ backgroundColor: 'var(--chart-bg)' }}>
                                 <ReactECharts
                                     option={option}
                                     style={{ height: 320, width: '100%' }}
@@ -100,8 +102,8 @@ const Message = ({ text, sender, chartData }) => {
                                 />
                             </div>
                         ) : (
-                            <div className="mt-3 bg-[#1f1f1f] p-3 rounded-md text-sm text-white overflow-auto">
-                                <div className="text-xs text-gray-300 mb-2">Parsed JSON (no chart mapping found)</div>
+                            <div className="mt-3 p-3 rounded-md text-sm overflow-auto" style={{ backgroundColor: 'var(--chart-bg)', color: 'var(--text-color)' }}>
+                                <div className="text-xs mb-2" style={{ color: 'var(--muted-text)' }}>Parsed JSON (no chart mapping found)</div>
                                 <pre className="whitespace-pre-wrap text-[12px] m-0">{JSON.stringify(chartData, null, 2)}</pre>
                             </div>
                         )}

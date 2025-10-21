@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Switch } from '@headlessui/react';
 import ChatInput from '../Components/ChatInput';
 import Message from '../Components/Message';
 import '../index.css'; 
@@ -120,13 +121,55 @@ const ChatInterface = () => {
         }
     };
 
-    return (
-        <div className="h-screen bg-[#212121] text-white flex flex-col">
-            <div className="fixed top-4 left-4 z-50">
-                <img src="/BPJS_Kesehatan_logo.png" alt="Logo" className="h-10 object-cover" />
-            </div>
+    // theme: 'dark' or 'light'
+	const [theme, setTheme] = useState(() => {
+		try {
+			return localStorage.getItem('chat_theme') || 'dark';
+		} catch {
+			return 'dark';
+		}
+	});
+	
+	useEffect(() => {
+		try { 
+			localStorage.setItem('chat_theme', theme); 
+		} catch { 
+			// ignore storage errors
+		}
+	}, [theme]);
 
-            {/* Centered column is the scroll container (scrollbar inside column as before) */}
+    return (
+        // apply theme class so CSS variables take effect and use them for background/text
+        <div
+			className={`h-screen flex flex-col ${theme === 'light' ? 'theme-light' : ''}`}
+			style={{ backgroundColor: 'var(--chat-bg)', color: 'var(--text-color)' }}
+		>
+			<div className="fixed top-4 right-4 z-50">
+				{/* Switch uses theme-aware CSS variables for track and thumb */}
+				<Switch
+					checked={theme === 'light'}
+					onChange={(enabled) => setTheme(enabled ? 'light' : 'dark')}
+					className="group relative flex h-7 w-14 cursor-pointer rounded-full p-1 ease-in-out"
+					style={{ backgroundColor: 'var(--switch-track)', border: '1px solid rgba(255,255,255,0.06)' }}
+				>
+					{/* thumb uses CSS variable so it adapts */}
+					<span
+						aria-hidden="true"
+						className="pointer-events-none inline-block transition-transform duration-200 ease-in-out"
+						style={{
+							display: 'inline-block',
+							width: 20,
+							height: 20,
+							borderRadius: 9999,
+							boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+							backgroundColor: 'var(--switch-thumb)',
+							transform: theme === 'light' ? 'translateX(28px)' : 'translateX(0)'
+						}}
+					/>
+				</Switch>
+			</div>
+
+			{/* Centered column is the scroll container (scrollbar inside column as before) */}
 			<div className="flex-1 flex justify-center">
 				<div className="h-full w-full max-w-3xl flex flex-col">
 					{/* Messages area: this is the scrollable container */}
@@ -134,7 +177,7 @@ const ChatInterface = () => {
 						{messages.length === 0 ? (
 							// initial centered view inside same column to avoid layout swap
 							<div className="h-full flex flex-col justify-center items-center px-4">
-								<h1 className="text-3xl text-white mb-8">
+								<h1 className="text-3xl mb-8" style={{ color: 'var(--text-color)' }}>
 									What can I help you with?
 								</h1>
 								<ChatInput onSendMessage={handleSendMessage} />
@@ -168,7 +211,7 @@ const ChatInterface = () => {
 					)}
 				</div>
 			</div>
-		</div>
+        </div>
     );
 };
 
