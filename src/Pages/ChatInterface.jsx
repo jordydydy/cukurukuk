@@ -169,21 +169,25 @@ const ChatInterface = () => {
 				</Switch>
 			</div>
 
-			{/* Centered column is the scroll container (scrollbar inside column as before) */}
+			{/* Centered column: now we allow messages area to be wider than the input area */}
 			<div className="flex-1 flex justify-center">
-				<div className="h-full w-full max-w-3xl flex flex-col">
-					{/* Messages area: this is the scrollable container */}
-					<div className="flex-1 overflow-y-auto p-6 space-y-4 chat-scrollbar">
+				{/* Make this column center items but not constrain messages width */}
+				<div className="h-full w-full flex flex-col items-center">
+					{/* Messages area: wider max width (allows chat box to expand horizontally) */}
+					<div className="flex-1 overflow-y-auto p-6 space-y-4 chat-scrollbar w-full max-w-[1200px]">
 						{messages.length === 0 ? (
 							// initial centered view inside same column to avoid layout swap
 							<div className="h-full flex flex-col justify-center items-center px-4">
 								<h1 className="text-3xl mb-8" style={{ color: 'var(--text-color)' }}>
 									What can I help you with?
 								</h1>
-								<ChatInput onSendMessage={handleSendMessage} />
+								{/* Keep initial input centered and constrained */}
+								<div style={{ width: '100%', maxWidth: 720 }}>
+									<ChatInput onSendMessage={handleSendMessage} />
+								</div>
 							</div>
 						) : (
-							// messages list
+							// messages list (now can be wider)
 							<div className="flex flex-col space-y-4">
 								{messages.map((msg, index) => (
 									<Message key={index} text={msg.text} sender={msg.sender} chartData={msg.chartData} />
@@ -202,11 +206,13 @@ const ChatInterface = () => {
 						)}
 					</div>
 
-					{/* Input pinned below column for both states when not in initial view */}
-					{/* For the initial state ChatInput is already shown above; when messages exist keep input here */}
+					{/* Input pinned below column; keep it narrower than messages so input's margins remain */}
 					{messages.length > 0 && (
-						<div className="p-4 w-full">
-							<ChatInput onSendMessage={handleSendMessage} />
+						<div className="p-4 w-full flex justify-center">
+							{/* Constrain input width separately from messages area */}
+							<div className="w-full max-w-3xl">
+								<ChatInput onSendMessage={handleSendMessage} />
+							</div>
 						</div>
 					)}
 				</div>

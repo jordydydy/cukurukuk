@@ -76,10 +76,13 @@ const Message = ({ text, sender, chartData }) => {
 
     const option = chartData ? buildEChartsOption(chartData) : null;
 
+    // larger max width when there's chart data
+    const bubbleMaxClass = chartData ? 'max-w-[95%] lg:max-w-[85%]' : 'max-w-[75%]';
+
     return (
         <div className={`w-full flex ${isUser ? 'justify-end' : 'justify-start'} px-2`}>
             <div
-                className={`inline-block rounded-2xl px-4 py-3 max-w-[75%] whitespace-pre-wrap wrap-break-word transition-opacity duration-200 ease-out ${entered ? 'opacity-100' : 'opacity-0'}`}
+                className={`inline-block rounded-2xl px-4 py-3 ${bubbleMaxClass} whitespace-pre-wrap wrap-break-word transition-opacity duration-200 ease-out ${entered ? 'opacity-100' : 'opacity-0'}`}
                 style={{
                     backgroundColor: isUser ? 'var(--bubble-user-bg)' : 'var(--bubble-bot-bg)',
                     color: isUser ? 'var(--bubble-user-text)' : 'var(--bubble-bot-text)'
@@ -97,7 +100,7 @@ const Message = ({ text, sender, chartData }) => {
                             <div className="p-0 rounded-md" style={{ backgroundColor: 'var(--chart-bg)' }}>
                                 <ReactECharts
                                     option={option}
-                                    style={{ height: 320, width: '100%' }}
+                                    style={{ height: 420, width: '100%' }} // increased height for readability
                                     notMerge={true}
                                 />
                             </div>
